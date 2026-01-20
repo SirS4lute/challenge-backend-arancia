@@ -1,0 +1,13 @@
+.git
+.cursor
+bin
+
+# local db / runtime data
+.data
+todo.db
+*.db
+
+# test / coverage artifacts
+*.out
+*.test
+coverage.*

@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: todo-api-config
+data:
+  PORT: "8080"
+  DB_PATH: "/data/todo.db"
+  LOG_LEVEL: "info"
+  GIN_MODE: "release"
+
