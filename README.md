@@ -2,11 +2,9 @@
 
 ToDo microservice in Go (Gin) with BoltDB persistence, Docker multi-stage image, and Kubernetes manifests.
 
-## Running locally
+## Running (no `make`)
 
-```bash
-make run
-```
+This project is intended to be run via **Docker** or **Kubernetes (Minikube)**.
 
 Environment variables:
 
@@ -44,10 +42,35 @@ docker run --rm -p 18080:8080 -e DB_PATH=/data/todo.db -v "$PWD/.data:/data" tod
 
 Manifests are in `k8s/`.
 
+### Minikube
+
+Start Minikube:
+
+```bash
+minikube start
+```
+
+Build the image inside Minikube:
+
+```bash
+minikube image build -t todo-api:local .
+```
+
 Apply:
 
 ```bash
 kubectl apply -f k8s/
+```
+
+Important note about persistence/replicas:
+
+- BoltDB is a **local file** and the manifests use a **single PVC** (`ReadWriteOnce`).
+- On Minikube (default storage classes), this means the workload should run with **1 replica**.
+
+If needed, scale it down:
+
+```bash
+kubectl scale deployment/todo-api --replicas=1
 ```
 
 Port-forward:
@@ -56,22 +79,14 @@ Port-forward:
 kubectl port-forward service/todo-api 8080:8080
 ```
 
-Using Minikube:
-
-```bash
-minikube image build -t todo-api:local .
-kubectl rollout restart deployment/todo-api
-kubectl get pods -w
-kubectl port-forward service/todo-api 8080:8080
-```
-
-Note: BoltDB is a local file. With `replicas: 2`, each Pod will have its own DB file (acceptable for the challenge; documented here).
+Then access the API at `http://localhost:8080`.
 
 ## Demo
 
 With the service running (local/Docker/K8s port-forward), run:
 
 ```bash
-BASE_URL=http://localhost:18080 ./scripts/demo.sh
+BASE_URL=http://localhost:18080 ./scripts/demo.sh   # Docker example
+# BASE_URL=http://localhost:8080 ./scripts/demo.sh  # Kubernetes port-forward example
 ```
 
