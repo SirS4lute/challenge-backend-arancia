@@ -2,7 +2,7 @@
 
 ToDo microservice in Go (Gin) with BoltDB persistence, Docker multi-stage image, and Kubernetes manifests.
 
-## Running (no `make`)
+## Running
 
 This project is intended to be run via **Docker** or **Kubernetes (Minikube)**.
 
@@ -89,4 +89,5 @@ With the service running (local/Docker/K8s port-forward), run:
 BASE_URL=http://localhost:18080 ./scripts/demo.sh   # Docker example
 # BASE_URL=http://localhost:8080 ./scripts/demo.sh  # Kubernetes port-forward example
 ```
+
 
